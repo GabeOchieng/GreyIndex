@@ -8,7 +8,7 @@ class Recognition():
         pass
 
     @staticmethod
-    def recbyseverity(self):
+    def recbyseverity():
         """
         Tag logs by severity
         :return: Dictionary: {"info": [info_list], "error":[error_list], "warning":[warning_list]}
@@ -27,6 +27,9 @@ class Recognition():
                 elif "error" in line.lower():
                     severity_results["error"].append(line)
 
+        print severity_results
+        return severity_results
+
 
     @staticmethod
     def recbytimestamp(self):
@@ -41,3 +44,7 @@ class Recognition():
         Load log files and direct them into the corresponding method
         :return:
         """
+
+
+if __name__ == "__main__":
+    Recognition.recbyseverity()

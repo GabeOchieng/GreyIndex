@@ -14,20 +14,18 @@ class Recognition():
         :return: Dictionary: {"info": [info_list], "error":[error_list], "warning":[warning_list]}
         """
 
-        info_list = []
-        warning_list = []
-        error_list = []
+        severity_results = {"info": [], "warning": [], "error": []}
 
         with open("test.log") as f:
             # Usage of readlines() is mandatory here 'cause of it's garbage collecting policy
             content = f.readlines()
             for line in content:
                 if "info" in line.lower():
-                    info_list.append(line)
+                    severity_results["info"].append(line)
                 elif "warning" in line.lower():
-                    warning_list.append(line)
+                    severity_results["warning"].append(line)
                 elif "error" in line.lower():
-                    error_list.append(line)
+                    severity_results["error"].append(line)
 
 
     @staticmethod

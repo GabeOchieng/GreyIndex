@@ -22,7 +22,7 @@ class LogHandler(tornado.web.RequestHandler):
 
 application = tornado.web.Application([
     (r"/", MainHandler),
-    (r"/logs/", LogHandler),
+    (r"/logs", LogHandler),
     (r"/logs/([a-zA-Z]+)/([a-zA-Z]+)", LogHandler),
 ])
 

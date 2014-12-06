@@ -16,7 +16,7 @@ def create():
 
     for i in range(0,100):
         f.write("%s:%s\n" % (str(datetime.utcnow()), "test"))
-        time.sleep(0.5)
+        #time.sleep(0.5)
 
     f.close()
 

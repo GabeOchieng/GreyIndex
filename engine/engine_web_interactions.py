@@ -6,3 +6,6 @@ def replace_newlines(raw_data):
 
 def formatted_list_to_string():
     pass
+
+def argument_unpacker(*argument):
+    pass

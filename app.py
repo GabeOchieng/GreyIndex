@@ -4,7 +4,7 @@ import engine.patterns as patterns
 from engine.log_filters import LogFilters
 from engine.engine_web_interactions import *
 
-log_filter = LogFilters()
+log_filter = LogFilters(patterns.log_search_patterns)
 
 
 class MainHandler(tornado.web.RequestHandler):
@@ -12,19 +12,20 @@ class MainHandler(tornado.web.RequestHandler):
         self.write("GreyIndex")
 
 class LogHandler(tornado.web.RequestHandler):
-    def get(self, recognition_type="type", recognition_arguments="all"):
-        self.write("Log Dumps about: %s %s<br>" % (recognition_type, recognition_arguments))
+    def get(self, *arguments): # TODO Unpack arguments
+        self.write("Log Dumps about: %s <br>" % (str(arguments)))
 
-        if (recognition_type == "timestamp"):
-            self.write("%s" % (str(log_filter.filter_based_timestamp())))
-        else:
-            self.write("%s" % (replace_newlines(str(log_filter.filter_based_type(recognition_arguments)))))
+        # if (recognition_type == "timestamp"):
+        #    self.write("%s" % (str(log_filter.filter_based_timestamp())))
+        # else:
+        for result in log_filter.filter_based_type('info'):
+            self.write("%s<br>" % (str(result)))
 
 
 application = tornado.web.Application([
     (r"/", MainHandler),
     (r"/logs", LogHandler),
-    (r"/logs/([a-zA-Z]+)/([a-zA-Z]+)", LogHandler),
+    (r"/logs/(([a-zA-Z]+)/?)+", LogHandler),
 ])
 
 if __name__ == "__main__":

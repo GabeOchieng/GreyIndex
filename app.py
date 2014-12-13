@@ -1,10 +1,11 @@
 import tornado.ioloop
 import tornado.web
-
+import engine.patterns as patterns
 from engine.log_filters import LogFilters
 from engine.engine_web_interactions import *
 
 log_filter = LogFilters()
+
 
 class MainHandler(tornado.web.RequestHandler):
     def get(self):

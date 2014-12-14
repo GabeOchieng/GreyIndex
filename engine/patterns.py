@@ -9,7 +9,7 @@ log_search_patterns = {
         'root': re.compile(r'INFO:root:(.+)', re.VERBOSE | re.MULTILINE),
         'os': re.compile(r'INFO:root:os:(.+)', re.VERBOSE | re.MULTILINE),
         'limit': re.compile(r'INFO:root:limit:(.+)', re.VERBOSE | re.MULTILINE),
-        'web context': re.compile(r'INFO:root:web context:(.+)', re.VERBOSE | re.MULTILINE),
+        'webcontext': re.compile(r'INFO:root:web context:(.+)', re.VERBOSE | re.MULTILINE),
         'tornado.access': re.compile(r'INFO:tornado\.access:(.+)', re.VERBOSE | re.MULTILINE)
     },
     'warning' : {

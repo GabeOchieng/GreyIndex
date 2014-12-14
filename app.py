@@ -12,20 +12,25 @@ class MainHandler(tornado.web.RequestHandler):
         self.write("GreyIndex")
 
 class LogHandler(tornado.web.RequestHandler):
-    def get(self, *arguments): # TODO Unpack arguments
-        self.write("Log Dumps about: %s <br>" % (str(arguments)))
+    def get(self, *arguments):
+        self.arguments = list(arguments)
+
+        self.write("GreyIndexing... <br>")
+        log_filter.load(self.arguments[0])
+        if self.arguments[1] == "type":
+            results = log_filter.filter_based_type(self.arguments[2])
 
         # if (recognition_type == "timestamp"):
         #    self.write("%s" % (str(log_filter.filter_based_timestamp())))
-        # else:
-        for result in log_filter.filter_based_type('info'):
+
+        for result in results:
             self.write("%s<br>" % (str(result)))
 
 
 application = tornado.web.Application([
     (r"/", MainHandler),
     (r"/logs", LogHandler),
-    (r"/logs/(([a-zA-Z]+)/?)+", LogHandler),
+    (r"/logs/file:([a-zA-Z0-9]+\.[a-zA-Z]+)/type:([a-zA-Z0-9]+)/args:([a-zA-Z0-9]+)", LogHandler)
 ])
 
 if __name__ == "__main__":

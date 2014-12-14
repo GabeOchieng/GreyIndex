@@ -5,18 +5,20 @@ class LogFilters():
     def __init__(self, *patterns):
         self.types = ["info", "error", "warning"]
         self.patterns = patterns
-        print self.patterns
 
     def filter_based_type(self, search_type="all"):
         """
         Tag logs by severity
         :return: Dictionary: {"info": [info_list], "error":[error_list], "warning":[warning_list]}
         """
-        self.load()
-        if (search_type == "all"):
+        # self.load()
+        if (search_type == u"all"):
             return self.show_all()
         else:
-            return re.findall(self.patterns[0]['search_type']['root'], str(self.show_all()))
+            try:
+                return re.findall(self.patterns[0][search_type]['root'], str(self.show_all()))
+            except KeyError:
+                return ["It seems you called for a nonexistent search type"]
 
 
 

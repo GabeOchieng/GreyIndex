@@ -26,6 +26,16 @@ class LogHandler(tornado.web.RequestHandler):
         for result in results:
             self.write("%s<br>" % (str(result)))
 
+class ErrorHandler(tornado.web.RequestHandler):
+    @staticmethod
+    def raise_404(self, *args, **kwargs):
+        tornado.web.RequestHandler.write_error(404,message="this is a custom 404 error message")
+    @staticmethod
+    def raise_403(self, *args, **kwargs):
+        tornado.web.RequestHandler.write_error(403,message="this is a custom 403 error message")
+    @staticmethod
+    def raise_500(self, *args, **kwargs):
+        tornado.web.RequestHandler.write_error(500,message="this is a custom 500 error message")
 
 application = tornado.web.Application([
     (r"/", MainHandler),

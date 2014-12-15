@@ -1,15 +1,10 @@
+import os.path
 import tornado.ioloop
 import tornado.web
 import engine.patterns as patterns
 from engine.log_filters import LogFilters
-from engine.engine_web_interactions import *
 
 log_filter = LogFilters(patterns.log_search_patterns)
-
-
-class MainHandler(tornado.web.RequestHandler):
-    def get(self):
-        self.write("GreyIndex")
 
 class LogHandler(tornado.web.RequestHandler):
     def get(self, *arguments):
@@ -22,9 +17,9 @@ class LogHandler(tornado.web.RequestHandler):
 
         # if (recognition_type == "timestamp"):
         #    self.write("%s" % (str(log_filter.filter_based_timestamp())))
-
-        for result in results:
-            self.write("%s<br>" % (str(result)))
+        self.render("log.html", logs=results)
+        #for result in results:
+            #self.write("%s<br>" % (str(result)))
 
 class ErrorHandler(tornado.web.RequestHandler):
     @staticmethod
@@ -37,11 +32,15 @@ class ErrorHandler(tornado.web.RequestHandler):
     def raise_500(self, *args, **kwargs):
         tornado.web.RequestHandler.write_error(500,message="this is a custom 500 error message")
 
-application = tornado.web.Application([
-    (r"/", MainHandler),
+application = tornado.web.Application(
+    [
+    (r"/", LogHandler),
     (r"/logs", LogHandler),
     (r"/logs/file:([a-zA-Z0-9]+\.[a-zA-Z]+)/type:([a-zA-Z0-9]+)/args:([a-zA-Z0-9]+)", LogHandler)
-])
+    ],
+    template_path=os.path.join(os.path.dirname(__file__), "templates"),
+    static_path=os.path.join(os.path.dirname(__file__), "static"),
+    )
 
 if __name__ == "__main__":
     application.listen(8000)

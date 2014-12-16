@@ -10,7 +10,6 @@ class LogHandler(tornado.web.RequestHandler):
     def get(self, *arguments):
         self.arguments = list(arguments)
 
-        self.write("GreyIndexing... <br>")
         log_filter.load(self.arguments[0])
         if self.arguments[1] == "type":
             results = log_filter.filter_based_type(self.arguments[2])
@@ -38,7 +37,6 @@ application = tornado.web.Application(
     (r"/logs", LogHandler),
     (r"/logs/file:([a-zA-Z0-9]+\.[a-zA-Z]+)/type:([a-zA-Z0-9]+)/args:([a-zA-Z0-9]+)", LogHandler)
     ],
-    autoreload=True,
     template_path=os.path.join(os.path.dirname(__file__), "templates"),
     static_path=os.path.join(os.path.dirname(__file__), "static"),
     )

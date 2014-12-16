@@ -3,3 +3,13 @@ body {
     font-weight: normal;
     color: #404040;
 }
+.blgrblack {background-color: #856D6D;}
+.blgrblue {background-color: #59C2AB;}
+
+.cblack {color: #856D6D;}
+.cred {color: #FF7A7A;}
+.cblue {color: #59C2AB;}
+.corange {color: #FCB644;}
+.cyellow {color: #DBFF4A;}
+
+.nbr {border-radius: 0px;}

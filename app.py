@@ -38,6 +38,7 @@ application = tornado.web.Application(
     (r"/logs", LogHandler),
     (r"/logs/file:([a-zA-Z0-9]+\.[a-zA-Z]+)/type:([a-zA-Z0-9]+)/args:([a-zA-Z0-9]+)", LogHandler)
     ],
+    autoreload=True,
     template_path=os.path.join(os.path.dirname(__file__), "templates"),
     static_path=os.path.join(os.path.dirname(__file__), "static"),
     )

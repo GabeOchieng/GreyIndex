@@ -6,6 +6,7 @@ class LogFilters():
         self.types = ["info", "error", "warning"]
         self.patterns = patterns
 
+
     def filter_based_type(self, search_type="all"):
         """
         Tag logs by severity
@@ -13,7 +14,7 @@ class LogFilters():
         """
         # self.load()
         if (search_type == u"all"):
-            return self.show_all()
+            return self.show_all().split('\n')
         else:
             try:
                 return re.findall(self.patterns[0][search_type]['root'], str(self.show_all()))
@@ -23,12 +24,14 @@ class LogFilters():
 
 
 
-    def filter_based_timestamp(self):
+    def filter_based_word(self, search_word):
         """
-        Tag logs by timestamp
+        Tag logs by timestamp can by found by using a certain string
         :return: Dictionary filled with timestamps found and equivalent logs
         """
-        self.load()
+        return re.findall(self.patterns[0][search_type]['root'], str(self.show_all()))
+
+
 
     def show_all(self):
         return self.log_file.read()
@@ -40,6 +43,3 @@ class LogFilters():
 
     def unload(self):
         self.log_file.close()
-
-if __name__ == "__main__":
-    Recognition.recbyseverity()

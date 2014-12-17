@@ -1,6 +1,4 @@
-"""
-    Script to create test logs
-"""
+# TODO fix the script
 from datetime import datetime
 import time
 

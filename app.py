@@ -13,7 +13,8 @@ class LogHandler(tornado.web.RequestHandler):
         log_filter.load(self.arguments[0])
         if self.arguments[1] == "type":
             results = log_filter.filter_based_type(self.arguments[2])
-
+        elif self.arguments[1] == "word":
+            results = log_filter.filter_based_word(self.arguments[2])
         # if (recognition_type == "timestamp"):
         #    self.write("%s" % (str(log_filter.filter_based_timestamp())))
         self.render("log.html", logs=results)

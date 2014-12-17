@@ -3,9 +3,8 @@ import re
 
 class LogFilters():
     def __init__(self, *patterns):
-        self.types = ["info", "error", "warning"]
         self.patterns = patterns
-
+        self.file_mame = False
 
     def filter_based_type(self, search_type="all"):
         """
@@ -29,14 +28,16 @@ class LogFilters():
         Tag logs by timestamp can by found by using a certain string
         :return: Dictionary filled with timestamps found and equivalent logs
         """
-        return re.findall(self.patterns[0][search_type]['root'], str(self.show_all()))
-
+        pattern = r"^(.*%s.*)$" % (search_word)
+        return re.findall(pattern, str(self.show_all()), re.VERBOSE | re.MULTILINE)
 
 
     def show_all(self):
         return self.log_file.read()
 
     def load(self, file_name="mob.log"):
+        if self.file_mame is not False:
+            self.log_file.close()
         # Load log files and direct them into the corresponding method
         self.file_mame = file_name
         self.log_file = open(file_name, "r")

@@ -17,9 +17,9 @@ class LogHandler(tornado.web.RequestHandler):
             results = log_filter.filter_based_word(self.arguments[2])
         # if (recognition_type == "timestamp"):
         #    self.write("%s" % (str(log_filter.filter_based_timestamp())))
-        self.render("log.html", logs=results)
-        #for result in results:
-            #self.write("%s<br>" % (str(result)))
+        self.render("log.html", logs=reversed(results))
+
+
 
 class ErrorHandler(tornado.web.RequestHandler):
     @staticmethod

@@ -1,7 +1,6 @@
 # Main logs recognition algorithms
 import re
-import difflib
-import time
+from pprint import pprint
 # Note: be carefull to keep a limit to opened files
 # and change the file loading with a better method
 
@@ -11,19 +10,15 @@ class CacheDiffs(): # File shall be loaded from cache and then filtered
         self.diff_regex = diff_regex
         self.files_cache = {}
         self.file_diffs = {}
-        self.differ = difflib.Differ()
 
     def load(self, file_name):
         self.log_file = open(file_name, "r")
+        file_contents = self.log_file.read()
         if not (file_name in self.files_cache.keys()):
-
             self.file_diffs[file_name] = ""
         else:
-            print time.time() # TODO needs optimization or some queue to manage the task
-            self.diffs = self.differ.compare(self.files_cache[file_name], self.log_file.read())
-            self.file_diffs[file_name] = "".join([diff for diff in self.diffs if re.search(self.diff_regex, diff)])
-            print time.time()
-        self.files_cache[file_name] = self.log_file.read()
+            self.file_diffs[file_name] = file_contents[len(self.files_cache[file_name]):]
+        self.files_cache[file_name] = file_contents
         self.log_file.close()
 
 
@@ -36,7 +31,7 @@ class LogFilters():
     def filter_based_type(self,  file_name, search_type="all"):
 
         self.cachediffs.load(file_name)
-
+        print self.cachediffs.files_cache[file_name][:50]
         if (search_type == u"all"):
             return self.cachediffs.files_cache[file_mame].split('\n')
         else:

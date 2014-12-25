@@ -28,20 +28,25 @@ class LogFilters():
         self.patterns = patterns
         self.file_mame = False
 
-    def filter_based_type(self,  file_name, search_type="all"):
-
+    def filter_based_type(self,  file_name, search_type="all", update=False):
         self.cachediffs.load(file_name)
-        print self.cachediffs.files_cache[file_name][:50]
+        if update is False:
+            file_contents = self.cachediffs.files_cache[file_name]
+        else:
+            file_contents = self.cachediffs.file_diffs[file_name]
         if (search_type == u"all"):
-            return self.cachediffs.files_cache[file_mame].split('\n')
+            return file_contents.split('\n')
         else:
             try:
-                return re.findall(self.patterns[0][search_type]['root'], self.cachediffs.files_cache[file_name])
+                return re.findall(self.patterns[0][search_type]['root'], file_contents)
             except KeyError:
                 return ["It seems you called for a nonexistent search type"]
 
-    def filter_based_word(self, file_mame, search_word):
+    def filter_based_word(self, file_mame, search_word, update=False):
         self.cachediffs.load(file_name)
+        if update is False:
+            file_contents = self.cachediffs.files_cache[file_name]
+        else:
+            file_contents = self.cachediffs.file_diffs[file_name]
         pattern = r"^(.*%s.*)$" % (search_word)
-        return re.findall(pattern, self.cachediffs.files_cache[file_mame], re.VERBOSE | re.MULTILINE)
-
+        return re.findall(pattern, file_contents, re.VERBOSE | re.MULTILINE)

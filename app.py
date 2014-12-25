@@ -2,23 +2,26 @@ import os.path
 import tornado.ioloop
 import tornado.web
 import engine.patterns as patterns
-from engine.log_filters import LogFilters
+from engine.log_filters import LogFilters, CacheDiffs
 from pprint import pprint
 
-log_filter = LogFilters(patterns.log_search_patterns)
+cache_diffs = CacheDiffs(patterns.diff_regex)
+log_filter = LogFilters(cache_diffs, patterns.log_search_patterns)
 
 class LogHandler(tornado.web.RequestHandler):
     def get(self, arguments):
         self.arguments = dict(arg.split(":") for arg in arguments.split("/") if arg)
         pprint(self.arguments)
-        log_filter.load(self.arguments['file'])
+        pprint(repr(self.request.remote_ip))
+
+
         if self.arguments['type'] == "type":
-            results = log_filter.filter_based_type(self.arguments['args'])
+            results = log_filter.filter_based_type(self.arguments['file'], self.arguments['args'])
         elif self.arguments['type'] == "word":
-            results = log_filter.filter_based_word(self.arguments['args'])
+            results = log_filter.filter_based_word(self.arguments['file'], self.arguments['args'])
         # if (recognition_type == "timestamp"):
         #    self.write("%s" % (str(log_filter.filter_based_timestamp())))
-        self.render("log.html", logs=reversed(results))
+        self.render("log.html", logs=results)
 
 
 
@@ -38,7 +41,6 @@ application = tornado.web.Application(
     (r"/", LogHandler),
     (r"/logs", LogHandler),
     (r"/logs/(.+)", LogHandler)
-    # (r"/logs/file:([a-zA-Z0-9]+\.[a-zA-Z]+)/type:([a-zA-Z0-9]+)/args:([a-zA-Z0-9]+)", LogHandler)
     ],
     template_path=os.path.join(os.path.dirname(__file__), "templates"),
     static_path=os.path.join(os.path.dirname(__file__), "static"),

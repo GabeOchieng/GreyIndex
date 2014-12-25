@@ -4,6 +4,8 @@
 """
 import re
 
+diff_regex = re.compile(r'\+ (.+)')
+
 log_search_patterns = {
     'info' : {
         'root': re.compile(r'INFO:root:(.+)', re.VERBOSE | re.MULTILINE),

@@ -43,10 +43,10 @@ class LogFilters():
                 return ["It seems you called for a nonexistent search type"]
 
     def filter_based_word(self, file_mame, search_word, update=False):
-        self.cachediffs.load(file_mame)
+        self.cachediffs.load(file_name)
         if update is False:
-            file_contents = self.cachediffs.files_cache[file_mame]
+            file_contents = self.cachediffs.files_cache[file_name]
         else:
-            file_contents = self.cachediffs.file_diffs[file_mame]
+            file_contents = self.cachediffs.file_diffs[file_name]
         pattern = r"^(.*%s.*)$" % (search_word)
         return re.findall(pattern, file_contents, re.VERBOSE | re.MULTILINE)

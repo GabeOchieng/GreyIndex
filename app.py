@@ -8,6 +8,31 @@ from pprint import pprint
 cache_diffs = CacheDiffs(patterns.diff_regex)
 log_filter = LogFilters(cache_diffs, patterns.log_search_patterns)
 
+
+class MainHandler(tornado.web.RequestHandler):
+    def get(self):
+        self.render("main.html")
+    def post(self):
+        try:
+            self.get_argument('file')
+            self.get_argument('type')
+            self.get_argument('args')
+        except:
+            self.render("main.html")
+            # Things like this should be redirected here
+            # GET /logs/file:/type:/args:/ (127.0.0.1) 1.00ms
+        else:
+            pass
+            redirect_str = "/logs/file:%s/type:%s/args:%s/" % (
+                self.get_argument('file'),
+                self.get_argument('type'),
+                self.get_argument('args')
+            )
+            if redirect_str == "/logs/file:/type:/args:/":
+                self.render("main.html")
+            else:
+                self.redirect(redirect_str)
+
 class LogHandler(tornado.web.RequestHandler):
     def get(self, arguments):
         self.arguments = dict(arg.split(":") for arg in arguments.split("/") if arg)
@@ -48,8 +73,8 @@ class ErrorHandler(tornado.web.RequestHandler):
 
 application = tornado.web.Application(
     [
-    (r"/", LogHandler),
-    (r"/logs", LogHandler),
+    (r"/", MainHandler),
+    (r"/logs", MainHandler),
     (r"/logs/(.+)", LogHandler)
     ],
     template_path=os.path.join(os.path.dirname(__file__), "templates"),

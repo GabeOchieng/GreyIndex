@@ -42,7 +42,7 @@ class LogFilters():
             except KeyError:
                 return ["It seems you called for a nonexistent search type"]
 
-    def filter_based_word(self, file_mame, search_word, update=False):
+    def filter_based_word(self, file_name, search_word, update=False):
         self.cachediffs.load(file_name)
         if update is False:
             file_contents = self.cachediffs.files_cache[file_name]

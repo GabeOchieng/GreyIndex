@@ -13,7 +13,7 @@ class CacheDiffs(): # File shall be loaded from cache and then filtered
 
     def load(self, file_name):
         self.log_file = open(file_name, "r")
-        file_contents = self.log_file.read()
+        file_contents = "".join([line for line in self.log_file])
         if not (file_name in self.files_cache.keys()):
             self.file_diffs[file_name] = ""
         else:
